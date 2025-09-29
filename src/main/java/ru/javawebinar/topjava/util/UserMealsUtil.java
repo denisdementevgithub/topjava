@@ -30,36 +30,46 @@ public class UserMealsUtil {
 
         System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
     }
+
     //Фильтрация через цикл
-    public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime
-            , LocalTime endTime, int caloriesPerDay) {
-        Map<LocalDate, Integer> sumOfCalories = getDateExcessMap(meals, caloriesPerDay);
+    public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime,
+                                                            LocalTime endTime, int caloriesPerDay) {
+        Map<LocalDate, Integer> sumOfCalories = getDateExcessMapByCycles(meals, caloriesPerDay);
         List<UserMealWithExcess> returnedList = new ArrayList<>();
         for (UserMeal currentUserMeal : meals) {
             if (TimeUtil.isBetweenHalfOpen(currentUserMeal.getDateTime().toLocalTime(), startTime, endTime) == true) {
-                returnedList.add(new UserMealWithExcess(currentUserMeal.getDateTime()
-                        , currentUserMeal.getDescription(), currentUserMeal.getCalories()
-                        , sumOfCalories.get(currentUserMeal.getDateTime().toLocalDate()) > caloriesPerDay));
+                returnedList.add(new UserMealWithExcess(currentUserMeal.getDateTime(),
+                        currentUserMeal.getDescription(), currentUserMeal.getCalories(),
+                        sumOfCalories.get(currentUserMeal.getDateTime().toLocalDate()) > caloriesPerDay));
             }
         }
         return returnedList;
     }
-    //Создание map, где ключем является дата, значением - сумма калорий за день
-    public static Map<LocalDate, Integer> getDateExcessMap(List<UserMeal> meals, int caloriesPerDay) {
+
+    //Фильтрация через stream
+    public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+        Map<LocalDate, Integer> sumOfCalories = getDateExcessMapByStream(meals, caloriesPerDay);
+        return meals.stream().
+                filter(x -> TimeUtil.isBetweenHalfOpen(x.getDateTime().toLocalTime(), startTime, endTime)).
+                map(x -> new UserMealWithExcess(x.getDateTime(),
+                        x.getDescription(), x.getCalories(),
+                        sumOfCalories.get(x.getDateTime().toLocalDate()) > caloriesPerDay)).
+                collect(Collectors.toList());
+    }
+
+    public static Map<LocalDate, Integer> getDateExcessMapByCycles(List<UserMeal> meals, int caloriesPerDay) {
         Map<LocalDate, Integer> tempMap = new HashMap<>();
-        for (UserMeal userMeal:meals) {
-            tempMap.merge(userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), (prev, current)->prev+current);
+        for (UserMeal userMeal : meals) {
+            tempMap.merge(userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), (prev, current) -> prev + current);
         }
         return tempMap;
     }
-    //Фильтрация через stream
-    public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        Map<LocalDate, Integer> sumOfCalories = getDateExcessMap(meals, caloriesPerDay);
-        return meals.stream()
-                .filter(x-> TimeUtil.isBetweenHalfOpen(x.getDateTime().toLocalTime(), startTime, endTime))
-                .map(x-> new UserMealWithExcess(x.getDateTime()
-                        , x.getDescription(), x.getCalories()
-                        , sumOfCalories.get(x.getDateTime().toLocalDate()) > caloriesPerDay))
-                .collect(Collectors.toList());
+
+    public static Map<LocalDate, Integer> getDateExcessMapByStream(List<UserMeal> meals, int caloriesPerDay) {
+        Map<LocalDate, Integer> tempMap = new HashMap<>();
+        meals.stream().
+                forEach(um -> tempMap.merge(um.getDateTime().toLocalDate(), um.getCalories(),
+                        (prev, current) -> prev + current));
+        return tempMap;
     }
 }
