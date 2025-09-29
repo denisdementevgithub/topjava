@@ -31,7 +31,6 @@ public class UserMealsUtil {
         System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
     }
 
-    //Фильтрация через цикл
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime,
                                                             LocalTime endTime, int caloriesPerDay) {
         Map<LocalDate, Integer> sumOfCalories = getDateExcessMapByCycles(meals, caloriesPerDay);
@@ -46,7 +45,6 @@ public class UserMealsUtil {
         return returnedList;
     }
 
-    //Фильтрация через stream
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         Map<LocalDate, Integer> sumOfCalories = getDateExcessMapByStream(meals, caloriesPerDay);
         return meals.stream().
@@ -57,7 +55,7 @@ public class UserMealsUtil {
                 collect(Collectors.toList());
     }
 
-    public static Map<LocalDate, Integer> getDateExcessMapByCycles(List<UserMeal> meals, int caloriesPerDay) {
+    private static Map<LocalDate, Integer> getDateExcessMapByCycles(List<UserMeal> meals, int caloriesPerDay) {
         Map<LocalDate, Integer> tempMap = new HashMap<>();
         for (UserMeal userMeal : meals) {
             tempMap.merge(userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), (prev, current) -> prev + current);
@@ -65,7 +63,7 @@ public class UserMealsUtil {
         return tempMap;
     }
 
-    public static Map<LocalDate, Integer> getDateExcessMapByStream(List<UserMeal> meals, int caloriesPerDay) {
+    private static Map<LocalDate, Integer> getDateExcessMapByStream(List<UserMeal> meals, int caloriesPerDay) {
         Map<LocalDate, Integer> tempMap = new HashMap<>();
         meals.stream().
                 forEach(um -> tempMap.merge(um.getDateTime().toLocalDate(), um.getCalories(),
