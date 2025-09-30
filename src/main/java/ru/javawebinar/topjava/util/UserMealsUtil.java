@@ -33,41 +33,39 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime,
                                                             LocalTime endTime, int caloriesPerDay) {
-        Map<LocalDate, Integer> sumOfCalories = getDateExcessMapByCycles(meals, caloriesPerDay);
+        Map<LocalDate, Integer> sumOfCalories = getDateExcessMapByCycles(meals);
         List<UserMealWithExcess> returnedList = new ArrayList<>();
-        for (UserMeal currentUserMeal : meals) {
-            if (TimeUtil.isBetweenHalfOpen(currentUserMeal.getDateTime().toLocalTime(), startTime, endTime) == true) {
-                returnedList.add(new UserMealWithExcess(currentUserMeal.getDateTime(),
-                        currentUserMeal.getDescription(), currentUserMeal.getCalories(),
-                        sumOfCalories.get(currentUserMeal.getDateTime().toLocalDate()) > caloriesPerDay));
+        for (UserMeal userMeal : meals) {
+            if (TimeUtil.isBetweenHalfOpen(userMeal.getDateTime().toLocalTime(), startTime, endTime)) {
+                returnedList.add(new UserMealWithExcess(userMeal.getDateTime(),
+                        userMeal.getDescription(), userMeal.getCalories(),
+                        sumOfCalories.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay));
             }
         }
         return returnedList;
     }
 
-    public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        Map<LocalDate, Integer> sumOfCalories = getDateExcessMapByStream(meals, caloriesPerDay);
-        return meals.stream().
-                filter(x -> TimeUtil.isBetweenHalfOpen(x.getDateTime().toLocalTime(), startTime, endTime)).
-                map(x -> new UserMealWithExcess(x.getDateTime(),
-                        x.getDescription(), x.getCalories(),
-                        sumOfCalories.get(x.getDateTime().toLocalDate()) > caloriesPerDay)).
-                collect(Collectors.toList());
-    }
-
-    private static Map<LocalDate, Integer> getDateExcessMapByCycles(List<UserMeal> meals, int caloriesPerDay) {
-        Map<LocalDate, Integer> tempMap = new HashMap<>();
+    private static Map<LocalDate, Integer> getDateExcessMapByCycles(List<UserMeal> meals) {
+        Map<LocalDate, Integer> dateExcessMap = new HashMap<>();
         for (UserMeal userMeal : meals) {
-            tempMap.merge(userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), (prev, current) -> prev + current);
+            dateExcessMap.merge(userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), Integer::sum);
         }
-        return tempMap;
+        return dateExcessMap;
     }
 
-    private static Map<LocalDate, Integer> getDateExcessMapByStream(List<UserMeal> meals, int caloriesPerDay) {
-        Map<LocalDate, Integer> tempMap = new HashMap<>();
-        meals.stream().
-                forEach(um -> tempMap.merge(um.getDateTime().toLocalDate(), um.getCalories(),
-                        (prev, current) -> prev + current));
-        return tempMap;
+    public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+        Map<LocalDate, Integer> sumOfCalories = getDateExcessMapByStream(meals);
+        return meals.stream()
+                        .filter(userMeal -> TimeUtil.isBetweenHalfOpen(userMeal.getDateTime().toLocalTime(), startTime, endTime))
+                .map(meal -> new UserMealWithExcess(meal.getDateTime(),
+                        meal.getDescription(), meal.getCalories(),
+                        sumOfCalories.get(meal.getDateTime().toLocalDate()) > caloriesPerDay))
+                .collect(Collectors.toList());
+    }
+
+    private static Map<LocalDate, Integer> getDateExcessMapByStream(List<UserMeal> meals) {
+        return meals.stream()
+                .collect(Collectors.toMap(userMeal -> userMeal.getDateTime().toLocalDate(), UserMeal::getCalories,
+                        Integer::sum));
     }
 }
