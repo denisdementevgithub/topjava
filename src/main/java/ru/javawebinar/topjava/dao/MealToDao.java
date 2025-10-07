@@ -7,31 +7,23 @@ import ru.javawebinar.topjava.util.MealsUtil;
 import java.util.List;
 
 public class MealToDao {
-    private List<MealTo> listOfMealTo;
-
-    public MealToDao() {
-        this.listOfMealTo = MealsUtil.getListOfMealTo();
-    }
-
     public void deleteMealTo(int id) {
-        MealsUtil.meals.remove(id);
-        listOfMealTo = MealsUtil.getListOfMealTo();
+        MealsUtil.remove(id);
     }
 
     public MealTo getMealToById(int id) {
-        return listOfMealTo.get(id);
+        return MealsUtil.getMealTo(MealsUtil.getMealById(id));
     }
 
     public void updateMealTo(int id, Meal meal) {
-        if (MealsUtil.meals.size()>id) {
-            MealsUtil.meals.set(id, meal);
-        } else {
-            MealsUtil.meals.add(meal);
-        }
-        listOfMealTo = MealsUtil.getListOfMealTo();
+        MealsUtil.set(id, meal);
+    }
+
+    public int createMealTo(Meal meal) {
+        return MealsUtil.createMeal(meal);
     }
 
     public List<MealTo> getAllMealTo() {
-        return listOfMealTo;
+        return MealsUtil.getListOfMealTo();
     }
 }

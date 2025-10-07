@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.util;
+package ru.javawebinar.topjava.web;
 
 import javax.servlet.*;
 import java.io.IOException;
@@ -16,8 +16,5 @@ public class CharsetFilter implements Filter {
             throws IOException, ServletException {
         request.setCharacterEncoding(encoding);
         next.doFilter(request, response);
-    }
-
-    public void destroy() {
     }
 }

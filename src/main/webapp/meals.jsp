@@ -18,23 +18,17 @@
 <table border-collapse: collapse;
        border="1";>
     <tr>
-        <th>Id</th>
+        <th>id</th>
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
         <th></th>
         <th></th>
     </tr>
-    <%
-        List<MealTo> allMealTo = (List<MealTo>) request.getAttribute("allMealTo");
-    %>
     <c:forEach var="mealTo" items="${allMealTo}">
-        <c:if test="${mealTo.isExcess() == true}">
-            <tr style="color: red">
-        </c:if>
-        <c:if test="${mealTo.isExcess() != true}">
-            <tr style="color: green">
-        </c:if>
+        <tr style="color:
+        <c:out value="${mealTo.isExcess() == true? 'red':'green'}" />
+                ">
         <td> ${mealTo.getId()}</td>
         <td> ${DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(mealTo.getDateTime())}</td>
         <td> ${mealTo.getDescription()}</td>
