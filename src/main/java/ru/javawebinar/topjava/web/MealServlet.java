@@ -37,22 +37,27 @@ public class MealServlet extends HttpServlet {
                 mealToDao.deleteMealTo(mealToId);
             } else if (action.equalsIgnoreCase("edit")) {
                 forward = "/meal.jsp";
+                log.debug("forward to meal from edit");
                 int mealToId = Integer.parseInt(request.getParameter("mealToId"));
                 MealTo mealTo = mealToDao.getMealToById(mealToId);
                 request.setAttribute("mealTo", mealTo);
             } else if (action.equalsIgnoreCase("listOfMealTo")) {
                 forward = "/meals.jsp";
+                log.debug("forward to meals from listOfMealTo");
                 request.setAttribute("allMealTo", mealToDao.getAllMealTo());
             } else if (action.equalsIgnoreCase("addMeal")) {
                 forward = "/meal.jsp";
+                log.debug("forward to meals from addMeal");
                 Meal meal = new Meal(LocalDateTime.now().withNano(0).withSecond(0), null, 0);
                 int id = mealToDao.createMealTo(meal);
                 request.setAttribute("mealTo", mealToDao.getMealToById(id));
             } else {
                 forward = "/meals.jsp";
+                log.debug("forward to meals from 'else'");
                 request.getRequestDispatcher(forward).forward(request, response);
             }
             if (forward == null) {
+                log.debug("redirect to meals");
                 response.sendRedirect("meals");
             } else {
                 RequestDispatcher view = request.getRequestDispatcher(forward);
@@ -60,6 +65,7 @@ public class MealServlet extends HttpServlet {
             }
         } else {
             forward = "/meals.jsp";
+            log.debug("forward to meals from great else");
             request.setAttribute("allMealTo", mealToDao.getAllMealTo());
             request.getRequestDispatcher(forward).forward(request, response);
             RequestDispatcher view = request.getRequestDispatcher(forward);
