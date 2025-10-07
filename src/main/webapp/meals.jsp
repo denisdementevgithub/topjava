@@ -25,21 +25,18 @@
         <th></th>
     </tr>
     <c:forEach var="mealTo" items="${allMealTo}">
-        <c:if test="${mealTo.isExcess() == true}">
-            <tr style="color: red">
-        </c:if>
-        <c:if test="${mealTo.isExcess() != true}">
-            <tr style="color: green">
-        </c:if>
-        <td> ${DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(mealTo.getDateTime())}</td>
-        <td> ${mealTo.getDescription()}</td>
-        <td> ${mealTo.getCalories()}</td>
-        <td>
-            <a href="meals?action=edit&mealToId=${mealTo.getId()}">Update</a>
-        </td>
-        <td>
-            <a href="meals?action=delete&mealToId=${mealTo.getId()}">Delete</a>
-        </td>
+        <tr style="color:
+            <c:out value="${mealTo.isExcess() == true? 'red':'green'}" />
+                ">
+            <td> ${DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(mealTo.getDateTime())}</td>
+            <td> ${mealTo.getDescription()}</td>
+            <td> ${mealTo.getCalories()}</td>
+            <td>
+                <a href="meals?action=edit&mealToId=${mealTo.getId()}">Update</a>
+            </td>
+            <td>
+                <a href="meals?action=delete&mealToId=${mealTo.getId()}">Delete</a>
+            </td>
         </tr>
     </c:forEach>
 </table>
