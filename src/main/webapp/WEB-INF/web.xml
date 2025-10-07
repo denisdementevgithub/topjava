@@ -15,4 +15,25 @@
         <servlet-name>userServlet</servlet-name>
         <url-pattern>/users</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>mealController</servlet-name>
+        <servlet-class>ru.javawebinar.topjava.controller.MealController</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>mealController</servlet-name>
+        <url-pattern>/meals</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>Filter</filter-name>
+        <filter-class>ru.javawebinar.topjava.util.CharsetFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 </web-app>
