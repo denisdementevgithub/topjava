@@ -17,22 +17,22 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>mealController</servlet-name>
-        <servlet-class>ru.javawebinar.topjava.controller.MealController</servlet-class>
+        <servlet-name>mealServlet</servlet-name>
+        <servlet-class>ru.javawebinar.topjava.web.MealServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>mealController</servlet-name>
+        <servlet-name>mealServlet</servlet-name>
         <url-pattern>/meals</url-pattern>
     </servlet-mapping>
 
     <filter>
-        <filter-name>Filter</filter-name>
-        <filter-class>ru.javawebinar.topjava.util.CharsetFilter</filter-class>
+        <filter-name>filter</filter-name>
+        <filter-class>ru.javawebinar.topjava.web.CharsetFilter</filter-class>
     </filter>
 
     <filter-mapping>
-        <filter-name>Filter</filter-name>
+        <filter-name>filter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

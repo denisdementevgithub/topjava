@@ -11,14 +11,10 @@
 <hr>
 <h2>Meal</h2>
 <div>
-    <%
-        MealTo mealTo = (MealTo) request.getAttribute("mealTo");
-    %>
     <form method="post">
-        <label> Id:
-            <input type="text" name="mealToId" value="${mealTo.getId()}">
-            <br>
-        </label>
+        <input type="hidden" name="id"
+               value="${mealTo.getId()}">
+        <br>
         <label> Date:
             <input type="datetime-local" name="dateTime"
                    value="${mealTo.getDateTime()}">
