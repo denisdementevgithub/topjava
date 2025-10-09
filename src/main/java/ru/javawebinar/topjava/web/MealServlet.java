@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import ru.javawebinar.topjava.dao.MealToDao;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -49,11 +50,13 @@ public class MealServlet extends HttpServlet {
                 forward = "/meal.jsp";
                 log.debug("forward to meals from addMeal");
                 Meal meal = new Meal(LocalDateTime.now().withNano(0).withSecond(0), null, 0);
-                int id = mealToDao.createMealTo(meal);
-                request.setAttribute("mealTo", mealToDao.getMealToById(id));
+                //meal.setId(MealsUtil.counter++);
+                //int id = mealToDao.createMealTo(meal);
+                request.setAttribute("mealTo", meal);
             } else {
                 forward = "/meals.jsp";
                 log.debug("forward to meals from 'else'");
+                request.setAttribute("allMealTo", mealToDao.getAllMealTo());
                 request.getRequestDispatcher(forward).forward(request, response);
             }
             if (forward == null) {
@@ -76,20 +79,23 @@ public class MealServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //MealToDao mealToDao = new MealToDao();
-        String action = request.getParameter("id");
-        if (action != null && !action.isEmpty()) {
-            int id = Integer.parseInt(action);
-            Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories")));
-            meal.setId(id);
-            mealToDao.updateMealTo(id, meal);
+        String strId = request.getParameter("id");
+        String action = request.getParameter("action");
+        System.out.println(action.toString());
+        if (strId != null && !strId.isEmpty()) {
+                int id = Integer.parseInt(strId);
+                Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
+                        request.getParameter("description"),
+                        Integer.parseInt(request.getParameter("calories")));
+                meal.setId(id);
+                mealToDao.updateMealTo(id, meal);
         } else {
-            Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories")));
-            mealToDao.createMealTo(meal);
+                Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
+                        request.getParameter("description"),
+                        Integer.parseInt(request.getParameter("calories")));
+                mealToDao.createMealTo(meal);
         }
+
         RequestDispatcher view = request.getRequestDispatcher("/meals.jsp");
         request.setAttribute("allMealTo", mealToDao.getAllMealTo());
         view.forward(request, response);

@@ -64,10 +64,11 @@ public class MealsUtil {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories)));
         return meals.stream()
+                .filter(meal -> meal.equals(providedMeal))
                 .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > CALORIES_PER_DAY))
-                .filter(meal -> meal.getDateTime().equals(providedMeal.getDateTime()))
-                .findFirst()
-                .get();
+                .collect(Collectors.toList())
+                .get(0);
+
     }
 
     public static void remove(int id) {
@@ -91,10 +92,23 @@ public class MealsUtil {
     }
 
     public static void set(int id, Meal meal) {
+        for (int i = 0; i < MealsUtil.meals.size(); i++) {
+            Meal curMeal = meals.get(i);
+            if (curMeal.getId() == id) {
+                meals.set(id, meal);
+            }
+        }
         MealsUtil.meals.set(id, meal);
     }
 
-    public static int createMeal(Meal meal) {
+    /*
+    public static MealTo createMealTo(Meal meal, boolean excess) {
+        return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+    }
+
+     */
+
+    public static int addMealIntoList(Meal meal) {
         meal.setId(counter++);
         MealsUtil.meals.add(meal);
         return MealsUtil.meals.indexOf(meal);

@@ -5,13 +5,19 @@
 <html lang="ru" >
 <head>
     <title>Meal</title>
+    <script>
+        function cancelAction() {
+            document.getElementById("form").reset();
+            window.location.href="meals";
+        }
+    </script>
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meal</h2>
 <div>
-    <form method="post">
+    <form id="form" method="post">
         <input type="hidden" name="id"
                value="${mealTo.getId()}">
         <br>
@@ -28,11 +34,12 @@
             <input type="text" name="calories" value="${mealTo.getCalories()}">
             <br>
         </label>
-        <button type="submit">Save</button>
-        <a href="meals?action=listOfMealTo">
-            <button type="button">Cancel</button>
-        </a>
+        <input type="submit" value="Save"/>
+        <input type="button" onclick="cancelAction()" value="Cancel"/>
+
+
     </form>
+
 </div>
 </body>
 </html>

@@ -20,7 +20,7 @@ public class MealToDao {
     }
 
     public int createMealTo(Meal meal) {
-        return MealsUtil.createMeal(meal);
+        return MealsUtil.addMealIntoList(meal);
     }
 
     public List<MealTo> getAllMealTo() {
