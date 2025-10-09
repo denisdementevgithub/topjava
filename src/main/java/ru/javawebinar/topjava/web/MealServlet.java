@@ -28,76 +28,55 @@ public class MealServlet extends HttpServlet {
         super.init(config);
         mealToDao = new MealToDao();
     }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //MealToDao mealToDao = new MealToDao();
         String forward = null;
-        String action = request.getParameter("action");;
-        if (action != null && !action.isEmpty()) {
-            if (action.equalsIgnoreCase("delete")) {
-                int mealToId = Integer.parseInt(request.getParameter("mealToId"));
-                mealToDao.deleteMealTo(mealToId);
-            } else if (action.equalsIgnoreCase("edit")) {
-                forward = "/meal.jsp";
-                log.debug("forward to meal from edit");
-                int mealToId = Integer.parseInt(request.getParameter("mealToId"));
-                MealTo mealTo = mealToDao.getMealToById(mealToId);
-                request.setAttribute("mealTo", mealTo);
-            } else if (action.equalsIgnoreCase("listOfMealTo")) {
-                forward = "/meals.jsp";
-                log.debug("forward to meals from listOfMealTo");
-                request.setAttribute("allMealTo", mealToDao.getAllMealTo());
-            } else if (action.equalsIgnoreCase("addMeal")) {
-                forward = "/meal.jsp";
-                log.debug("forward to meals from addMeal");
-                Meal meal = new Meal(LocalDateTime.now().withNano(0).withSecond(0), null, 0);
-                //meal.setId(MealsUtil.counter++);
-                //int id = mealToDao.createMealTo(meal);
-                request.setAttribute("mealTo", meal);
-            } else {
-                forward = "/meals.jsp";
-                log.debug("forward to meals from 'else'");
-                request.setAttribute("allMealTo", mealToDao.getAllMealTo());
-                request.getRequestDispatcher(forward).forward(request, response);
-            }
-            if (forward == null) {
-                log.debug("redirect to meals");
-                response.sendRedirect("meals");
-            } else {
-                RequestDispatcher view = request.getRequestDispatcher(forward);
-                view.forward(request, response);
-            }
+        String action = request.getParameter("action");
+        if
+        if (action.equalsIgnoreCase("delete")) {
+            int mealToId = Integer.parseInt(request.getParameter("mealToId"));
+            mealToDao.deleteMealTo(mealToId);
+            log.debug("forward to meals from delete");
+        } else if (action.equalsIgnoreCase("edit")) {
+            forward = "/meal.jsp";
+            int mealToId = Integer.parseInt(request.getParameter("mealToId"));
+            MealTo mealTo = mealToDao.getMealToById(mealToId);
+            request.setAttribute("mealTo", mealTo);
+            log.debug("forward to meal from edit");
+        } else if (action.equalsIgnoreCase("addMeal")) {
+            forward = "/meal.jsp";
+            Meal meal = new Meal(LocalDateTime.now().withNano(0).withSecond(0), null, 0);
+            request.setAttribute("mealTo", meal);
+            log.debug("forward to meals from addMeal");
         } else {
             forward = "/meals.jsp";
-            log.debug("forward to meals from great else");
             request.setAttribute("allMealTo", mealToDao.getAllMealTo());
             request.getRequestDispatcher(forward).forward(request, response);
-            RequestDispatcher view = request.getRequestDispatcher(forward);
-            view.forward(request, response);
+            log.debug("forward to meals from else");
         }
+        RequestDispatcher view = request.getRequestDispatcher(forward);
+        view.forward(request, response);
 
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //MealToDao mealToDao = new MealToDao();
         String strId = request.getParameter("id");
-        String action = request.getParameter("action");
-        System.out.println(action.toString());
         if (strId != null && !strId.isEmpty()) {
-                int id = Integer.parseInt(strId);
-                Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
-                        request.getParameter("description"),
-                        Integer.parseInt(request.getParameter("calories")));
-                meal.setId(id);
-                mealToDao.updateMealTo(id, meal);
+            int id = Integer.parseInt(strId);
+            Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
+                    request.getParameter("description"),
+                    Integer.parseInt(request.getParameter("calories")));
+            meal.setId(id);
+            mealToDao.updateMealTo(id, meal);
         } else {
-                Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
-                        request.getParameter("description"),
-                        Integer.parseInt(request.getParameter("calories")));
-                mealToDao.createMealTo(meal);
+            Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
+                    request.getParameter("description"),
+                    Integer.parseInt(request.getParameter("calories")));
+            mealToDao.createMealTo(meal);
         }
-
         RequestDispatcher view = request.getRequestDispatcher("/meals.jsp");
         request.setAttribute("allMealTo", mealToDao.getAllMealTo());
+        log.debug("forward to meals from post");
         view.forward(request, response);
     }
 
