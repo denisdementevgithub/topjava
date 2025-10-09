@@ -26,7 +26,7 @@
     </tr>
     <c:forEach var="mealTo" items="${allMealTo}">
         <tr style="color:
-            <c:out value="${mealTo.isExcess() == true? 'red':'green'}" />
+            <c:out value="${mealTo.isExcess()? 'red':'green'}" />
                 ">
             <td> ${mealTo.getId()}</td>
             <td> ${DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(mealTo.getDateTime())}</td>
