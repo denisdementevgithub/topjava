@@ -28,7 +28,6 @@
         <tr style="color:
             <c:out value="${mealTo.isExcess()? 'red':'green'}" />
                 ">
-            <td> ${mealTo.getId()}</td>
             <td> ${DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(mealTo.getDateTime())}</td>
             <td> ${mealTo.getDescription()}</td>
             <td> ${mealTo.getCalories()}</td>
