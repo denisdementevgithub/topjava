@@ -14,7 +14,9 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(this::save);
+        for (Meal meal : MealsUtil.meals) {
+            save(meal);
+        }
     }
 
     @Override
@@ -30,11 +32,13 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id) {
+
         return mealsMap.remove(id) != null;
     }
 
     @Override
     public Meal get(int id) {
+
         return mealsMap.get(id);
     }
 
