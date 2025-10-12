@@ -49,17 +49,11 @@
         </dl>
         <dl>
             <dt>Password:</dt>
-            <dd><input type="number" value="${user.password}" name="password" required></dd>
+            <dd><input type="text" value="${user.password}" name="password" required></dd>
         </dl>
         <dl>
-            <dt>Role:</dt>
-
-
-            <dd><input type="text" value="
-                <c:forEach var="role" items="${user.roles}">
-                <div> ${role} </div>
-                </c:forEach>
-                " name="role" required></dd>
+            <dt>Role в формате "ROLE":</dt>
+            <dd><input type="text" value="${user.roles}" name="role" required></dd>
         </dl>
         <button type="submit">Save</button>
         <button onclick="window.history.back()" type="button">Cancel</button>

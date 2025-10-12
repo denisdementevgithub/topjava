@@ -19,8 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -72,8 +71,9 @@ public class UserServlet extends HttpServlet {
             case "all":
             default:
                 log.info("getAll");
-                request.setAttribute("users",
-                        repository.getAll());
+                List<User> users = repository.getAll();
+                users.sort((u1, u2)->u1.getName().compareTo(u2.getName()));
+                request.setAttribute("users", users);
                 request.getRequestDispatcher("/users.jsp").forward(request, response);
                 break;
         }
