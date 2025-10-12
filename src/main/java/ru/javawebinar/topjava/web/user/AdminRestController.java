@@ -6,7 +6,7 @@ import ru.javawebinar.topjava.model.User;
 import java.util.List;
 
 @Controller
-public class AdminUserRestController extends AbstractUserController {
+public class AdminRestController extends AbstractController {
 
     @Override
     public List<User> getAll() {

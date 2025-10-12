@@ -20,8 +20,7 @@ public class InMemoryMealRepository implements MealRepository {
     private final Map<Integer, Meal> mealsMap = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
-    @PostConstruct
-    public void init() {
+     {
         for (Meal meal : MealsUtil.meals) {
             save(meal);
         }
@@ -54,16 +53,16 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Collection<Meal> getAll() {
         List<Meal> meals = new ArrayList(mealsMap.values());
+        System.out.println("meals in repo " + meals);
         meals.sort((m1, m2)->m2.getDate().compareTo(m1.getDate()));
-        System.out.println(meals);
         return meals;
     }
 
     @Override
-    public List<Meal> getListForUser(int userId) {
-        List<Meal> meals = (List<Meal>) mealsMap.values().stream().filter(m->m.getUserId() == userId);
-        meals.sort((m1, m2) -> m2.getDate().compareTo(m1.getDate()));
-        return meals.stream().filter(m->m.getUserId() == userId).collect(Collectors.toList());
+    public Collection<Meal> getByUserId(int userId) {
+        return mealsMap.values().stream().filter(m->m.getUserId() == userId)
+                .sorted((m1, m2) -> m2.getDate().compareTo(m1.getDate()))
+                .collect(Collectors.toList());
     }
 }
 

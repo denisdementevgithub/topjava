@@ -6,7 +6,7 @@ import ru.javawebinar.topjava.model.User;
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 @Controller
-public class ProfileUserRestController extends AbstractUserController {
+public class ProfileRestController extends AbstractController {
 
     public User get() {
         return super.get(authUserId());

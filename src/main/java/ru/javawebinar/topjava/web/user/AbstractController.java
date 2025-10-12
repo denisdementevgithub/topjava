@@ -12,7 +12,7 @@ import java.util.List;
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkIsNew;
 
-public abstract class AbstractUserController {
+public abstract class AbstractController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

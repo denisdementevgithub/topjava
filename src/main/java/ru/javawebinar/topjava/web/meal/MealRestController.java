@@ -9,6 +9,8 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.service.UserService;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.text.CollationElementIterator;
 import java.util.ArrayList;
@@ -27,28 +29,44 @@ public class MealRestController {
 
     public Collection<Meal> getAll() {
         log.info("getAll");
-        return service.getAll();
+        return service.getByUserId(SecurityUtil.authUserId());
     }
 
     public Meal get(int id) {
         log.info("get {}", id);
-        return service.get(id);
+        if (SecurityUtil.authUserId() == service.get(id).getUserId()) {
+            return service.get(id);
+        } else {
+            throw new NotFoundException("Еда не найдена");
+        }
     }
 
     public Meal create(Meal meal) {
         log.info("create {}", meal);
         checkIsNew(meal);
+        meal.setUserId(SecurityUtil.authUserId());
         return service.create(meal);
     }
 
     public void delete(int id) {
-        log.info("delete {}", id);
-        service.delete(id);
+        log.info("get {}", id);
+        if (SecurityUtil.authUserId() == service.get(id).getUserId()) {
+            log.info("delete {}", id);
+            service.delete(id);
+        } else {
+            throw new NotFoundException("Еда не найдена");
+        }
+
     }
 
     public void update(Meal meal, int id) {
-        log.info("update {} with id={}", meal, id);
-        assureIdConsistent(meal, id);
-        service.update(meal);
+        log.info("get {}", id);
+        if (SecurityUtil.authUserId() == service.get(id).getUserId()) {
+            log.info("update {} with id={}", meal, id);
+            assureIdConsistent(meal, id);
+            service.update(meal);
+        } else {
+            throw new NotFoundException("Еда не найдена");
+        }
     }
 }

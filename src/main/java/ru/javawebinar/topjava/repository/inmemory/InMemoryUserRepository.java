@@ -20,11 +20,13 @@ public class InMemoryUserRepository implements UserRepository {
 
     private final Map<Integer, User> usersMap = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
-    {
+    /*{
         for (User user : UsersUtil.users) {
             save(user);
         }
     }
+
+     */
 
 
     @Override
