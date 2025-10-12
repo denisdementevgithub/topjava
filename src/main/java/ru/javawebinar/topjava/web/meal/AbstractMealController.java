@@ -8,7 +8,9 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.service.UserService;
 
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
@@ -20,9 +22,9 @@ public abstract class AbstractMealController {
     @Autowired
     private MealService service;
 
-    public List<Meal> getAll() {
+    public Collection<Meal> getAll() {
         log.info("getAll");
-        return new ArrayList<>(service.getAll());
+        return service.getAll();
     }
 
     public Meal get(int id) {

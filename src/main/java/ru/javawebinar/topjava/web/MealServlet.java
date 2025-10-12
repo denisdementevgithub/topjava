@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.web.meal.AdminMealRestController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,16 +15,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     private MealRepository repository;
-
+    //private AdminMealRestController adminMealRestController;
     @Override
     public void init() {
         repository = new InMemoryMealRepository();
+        //adminMealRestController = new AdminMealRestController();
     }
 
     @Override
@@ -37,6 +41,15 @@ public class MealServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("calories")));
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
+        /*if (meal.isNew()) {
+            log.info("Create {}", meal);
+            adminMealRestController.create(meal);
+        } else {
+            log.info("Update {}", meal);
+            adminMealRestController.update(meal, meal.getId());
+        }
+
+         */
         repository.save(meal);
         response.sendRedirect("meals");
     }
@@ -49,6 +62,7 @@ public class MealServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete id={}", id);
+                //adminMealRestController.delete(id);
                 repository.delete(id);
                 response.sendRedirect("meals");
                 break;
@@ -57,14 +71,17 @@ public class MealServlet extends HttpServlet {
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
                         repository.get(getId(request));
+                        //adminMealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
+                //List<Meal> meals = new ArrayList<>(adminMealRestController.getAll());
+                List<Meal> meals = new ArrayList<>(repository.getAll());
                 request.setAttribute("meals",
-                        MealsUtil.getTos(repository.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY));
+                        MealsUtil.getTos(meals, MealsUtil.DEFAULT_CALORIES_PER_DAY));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }

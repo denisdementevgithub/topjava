@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
@@ -32,8 +33,10 @@ public class MealService {
         return checkNotFound(repository.get(id), id);
     }
 
-    public List<Meal> getAll() {
-        return new ArrayList<Meal>(repository.getAll());
+    public Collection<Meal> getAll() {
+        Collection<Meal> collection = repository.getAll();
+        System.out.println(collection);
+        return collection;
     }
 
     public void update(Meal meal) {

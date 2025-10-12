@@ -5,13 +5,14 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.web.user.AbstractUserController;
 
+import java.util.Collection;
 import java.util.List;
 
 @Controller
 public class AdminMealRestController extends AbstractMealController {
 
     @Override
-    public List<Meal> getAll() {
+    public Collection<Meal> getAll() {
         return super.getAll();
     }
 
