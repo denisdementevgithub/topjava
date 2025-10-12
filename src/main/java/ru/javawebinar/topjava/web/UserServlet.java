@@ -72,6 +72,7 @@ public class UserServlet extends HttpServlet {
             default:
                 log.info("getAll");
                 List<User> users = repository.getAll();
+                System.out.println("users in servlet " + users);
                 users.sort((u1, u2)->u1.getName().compareTo(u2.getName()));
                 request.setAttribute("users", users);
                 request.getRequestDispatcher("/users.jsp").forward(request, response);
