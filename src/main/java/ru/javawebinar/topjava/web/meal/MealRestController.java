@@ -36,54 +36,31 @@ public class MealRestController {
         this.service = service;
     }
 
-    public Collection<Meal> getAll() {
+    public Collection<Meal> getAll(Integer userId) {
         log.info("getAll");
-        return service.getAll();
-        //return memoryMealRepository.getByUserId(SecurityUtil.authUserId());
+        return service.getAll(userId);
     }
 
-    public Meal get(int id) {
+    public Meal get(int id, Integer userId) {
         log.info("get {}", id);
-        //if (SecurityUtil.authUserId() == service.get(id).getUserId()) {
-            return inMemoryMealRepository.get(id);
-        //} else {
-        //    throw new NotFoundException("Еда не найдена");
-        //}
+        return service.get(id, userId);
     }
 
-    public Meal create(Meal meal) {
+    public Meal create(Meal meal, Integer userId) {
         log.info("create {}", meal);
         checkIsNew(meal);
         meal.setUserId(SecurityUtil.authUserId());
-        //return service.create(meal);
-        return inMemoryMealRepository.save(meal);
+        //return inMemoryMealRepository.save(meal, userId);
+        return service.create(meal, userId);
     }
 
-    public void delete(int id) {
+    public void delete(int id, Integer userId) {
         log.info("get {}", id);
-        /*if (SecurityUtil.authUserId() == service.get(id).getUserId()) {
-            log.info("delete {}", id);
-            service.delete(id);
-        } else {
-            throw new NotFoundException("Еда не найдена");
-        }
-
-         */
-        inMemoryMealRepository.delete(id);
+        service.delete(id, userId);
     }
 
-    public void update(Meal meal, int id) {
+    public void update(Meal meal, int id, Integer userId) {
         log.info("get {}", id);
-
-        /*if (SecurityUtil.authUserId() == service.get(id).getUserId()) {
-            log.info("update {} with id={}", meal, id);
-            assureIdConsistent(meal, id);
-            service.update(meal);
-        } else {
-            throw new NotFoundException("Еда не найдена");
-        }
-
-         */
-        inMemoryMealRepository.save(meal);
+        service.update(meal, userId);
     }
 }

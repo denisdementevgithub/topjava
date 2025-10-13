@@ -18,20 +18,20 @@ public class MealService {
         this.repository = repository;
     }
 
-    public Meal create(Meal meal) {
-        return repository.save(meal);
+    public Meal create(Meal meal, Integer userId) {
+        return repository.save(meal, userId);
     }
 
-    public void delete(int id) {
-        checkNotFound(repository.delete(id), id);
+    public void delete(int id, Integer userId) {
+        checkNotFound(repository.delete(id, userId), id);
     }
 
-    public Meal get(int id) {
-        return checkNotFound(repository.get(id), id);
+    public Meal get(int id, Integer userId) {
+        return checkNotFound(repository.get(id, userId), id);
     }
 
-    public Collection<Meal> getAll() {
-        Collection<Meal> collection = repository.getAll();
+    public Collection<Meal> getAll(Integer userId) {
+        Collection<Meal> collection = repository.getAll(userId);
         System.out.println(collection);
         return collection;
     }
@@ -40,8 +40,8 @@ public class MealService {
         return checkNotFound(repository.getByUserId(userId), "userId=" + userId);
     }
 
-    public void update(Meal meal) {
-        checkNotFound(repository.save(meal), meal.getId());
+    public void update(Meal meal, Integer userId) {
+        checkNotFound(repository.save(meal, userId), meal.getId());
     }
 
 }

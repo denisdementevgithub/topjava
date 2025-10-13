@@ -25,13 +25,9 @@ public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     private InMemoryMealRepository repository;
-    private MealRestController mealRestController;
-    private MealService service;
     @Override
     public void init() {
         repository = new InMemoryMealRepository();
-        service = new MealService(repository);
-        mealRestController = new MealRestController(repository, service);
     }
 
     @Override
@@ -43,7 +39,7 @@ public class MealServlet extends HttpServlet {
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")),
-                Integer.parseInt(request.getParameter("userId"))
+                null
         );
 /*
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
@@ -55,35 +51,42 @@ public class MealServlet extends HttpServlet {
             mealRestController.update(meal, meal.getId());
         }
         */
-        repository.save(meal);
+        //String userIdString = request.getParameter("userId");
+        String userIdString = "1";
+        if (userIdString != null) {
+            meal.setUserId(Integer.parseInt(userIdString));
+        }
+        repository.save(meal, meal.getUserId());
         response.sendRedirect("meals");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-
+        //String userIdStr = request.getParameter("userId");
+        String userIdStr = "1";
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
                 log.info("Delete id={}", id);
                 //mealRestController.delete(id);
-                repository.delete(id);
+                repository.delete(id, checkIfUserIdNull(userIdStr));
                 response.sendRedirect("meals");
                 break;
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000, null) :
-                        repository.get(getId(request));
+                        repository.get(getId(request), checkIfUserIdNull(userIdStr));
                         //mealRestController.get(getId(request));
+                System.out.println("get meal in update method" + meal);
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
-                List<Meal> meals = new ArrayList<>(mealRestController.getAll());
+                List<Meal> meals = new ArrayList<>(repository.getAll(checkIfUserIdNull(userIdStr)));
                 //List<Meal> meals = new ArrayList<>(repository.getAll());
                 System.out.println("meals in servlet " + meals);
                 request.setAttribute("meals",
@@ -91,10 +94,14 @@ public class MealServlet extends HttpServlet {
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
+
     }
 
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
+    }
+    private Integer checkIfUserIdNull(String userIdStr) {
+        return userIdStr != null? Integer.parseInt(userIdStr): null;
     }
 }

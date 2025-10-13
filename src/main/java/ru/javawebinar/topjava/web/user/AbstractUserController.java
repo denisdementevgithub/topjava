@@ -12,7 +12,7 @@ import java.util.List;
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkIsNew;
 
-public abstract class AbstractController {
+public abstract class AbstractUserController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -20,7 +20,7 @@ public abstract class AbstractController {
 
     public List<User> getAll() {
         log.info("getAll");
-        return new ArrayList<>(service.getAll());
+        return service.getAll();
     }
 
     public User get(int id) {
