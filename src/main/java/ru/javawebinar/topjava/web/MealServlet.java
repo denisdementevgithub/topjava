@@ -41,20 +41,9 @@ public class MealServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("calories")),
                 null
         );
-/*
-        log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        if (meal.isNew()) {
-            log.info("Create {}", meal);
-            mealRestController.create(meal);
-        } else {
-            log.info("Update {}", meal);
-            mealRestController.update(meal, meal.getId());
-        }
-        */
-        //String userIdString = request.getParameter("userId");
-        String userIdString = "1";
-        if (userIdString != null) {
-            meal.setUserId(Integer.parseInt(userIdString));
+        Integer userId = SecurityUtil.authUserId();
+        if (userId != null) {
+            meal.setUserId(userId);
         }
         repository.save(meal, meal.getUserId());
         response.sendRedirect("meals");
@@ -63,32 +52,26 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        //String userIdStr = request.getParameter("userId");
-        String userIdStr = "1";
+        Integer userId = SecurityUtil.authUserId();
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
                 log.info("Delete id={}", id);
-                //mealRestController.delete(id);
-                repository.delete(id, checkIfUserIdNull(userIdStr));
+                repository.delete(id, userId);
                 response.sendRedirect("meals");
                 break;
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000, null) :
-                        repository.get(getId(request), checkIfUserIdNull(userIdStr));
-                        //mealRestController.get(getId(request));
-                System.out.println("get meal in update method" + meal);
+                        repository.get(getId(request), userId);
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
-                List<Meal> meals = new ArrayList<>(repository.getAll(checkIfUserIdNull(userIdStr)));
-                //List<Meal> meals = new ArrayList<>(repository.getAll());
-                System.out.println("meals in servlet " + meals);
+                List<Meal> meals = new ArrayList<>(repository.getAll(userId));
                 request.setAttribute("meals",
                         MealsUtil.getTos(meals, MealsUtil.DEFAULT_CALORIES_PER_DAY));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
@@ -101,7 +84,5 @@ public class MealServlet extends HttpServlet {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
     }
-    private Integer checkIfUserIdNull(String userIdStr) {
-        return userIdStr != null? Integer.parseInt(userIdStr): null;
-    }
+
 }

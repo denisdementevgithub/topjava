@@ -7,12 +7,11 @@ import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import javax.jws.soap.SOAPBinding;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
@@ -25,6 +24,7 @@ public class InMemoryUserRepository implements UserRepository {
         List<User> users = Arrays.asList(
                 new User(null,"Иван", "ivan@mail.ru", "123", Role.ADMIN),
                 new User(null, "Дмитрий", "dmitrii@mail.ru", "123", Role.USER, Role.ADMIN),
+                new User(null, "Антон", "danton@mail.ru", "123", Role.USER),
                 new User(null, "Антон", "anton@mail.ru", "123", Role.USER)
         );
         for (User user : users) {
@@ -59,10 +59,10 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        List<User> users = new ArrayList<>(usersMap.values());
-        System.out.println("users in repo " + users);
-        users.sort((u1, u2)->u1.getName().compareTo(u2.getName()));
-        return users;
+        //List<User> users = new ArrayList<>(usersMap.values());
+        //users.sort((u1, u2)->u1.getName().compareTo(u2.getName()));
+        return new ArrayList<>(usersMap.values()).stream().sorted(Comparator.comparing(User::getName)
+                .thenComparing(User::getEmail)).collect(Collectors.toList());
     }
 
     @Override
@@ -72,6 +72,7 @@ public class InMemoryUserRepository implements UserRepository {
         for(User user: usersMap.values()) {
             if (user.getEmail().equalsIgnoreCase(email)) {
                 returnedUser = user;
+                break;
             }
         }
         return returnedUser;

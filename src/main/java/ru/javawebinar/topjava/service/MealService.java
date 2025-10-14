@@ -31,14 +31,9 @@ public class MealService {
     }
 
     public Collection<Meal> getAll(Integer userId) {
-        Collection<Meal> collection = repository.getAll(userId);
-        System.out.println(collection);
-        return collection;
+        return checkNotFound(repository.getAll(userId), "userId=" + userId);
     }
 
-    public Collection<Meal> getByUserId(Integer userId) {
-        return checkNotFound(repository.getByUserId(userId), "userId=" + userId);
-    }
 
     public void update(Meal meal, Integer userId) {
         checkNotFound(repository.save(meal, userId), meal.getId());
