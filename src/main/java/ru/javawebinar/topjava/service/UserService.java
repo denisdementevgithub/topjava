@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.service;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.User;
@@ -20,6 +21,12 @@ public class UserService {
 
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
+        for (User user1 : repository.getAll()) {
+            if (user1.getEmail().equals(user.getEmail())) {
+                throw new DataAccessException("Insert another email") {
+                };
+            }
+        }
         return repository.save(user);
     }
 

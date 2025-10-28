@@ -20,17 +20,19 @@ public class JpaMealRepository implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
-        /*meal.setUser(em.getReference(User.class, userId));
+
+        meal.setUser(em.getReference(User.class, userId));
         if (meal.isNew()) {
             em.persist(meal);
             return meal;
         } else {
             return em.merge(meal);
         }
-         */
 
+
+/*
         if (meal.isNew()) {
-            meal.setUser(em.find(User.class, userId));
+            meal.setUser(em.getReference(User.class, userId));
             em.persist(meal);
             return meal;
         } else {
@@ -41,9 +43,11 @@ public class JpaMealRepository implements MealRepository {
                     .setParameter(4, meal.getId())
                     .setParameter(5, userId)
                     .executeUpdate();
+
             return meal;
         }
 
+ */
     }
 
     @Override
@@ -53,20 +57,12 @@ public class JpaMealRepository implements MealRepository {
                 .setParameter(1, id)
                 .setParameter(2, userId)
                 .executeUpdate() != 0;
-
-        /*
-        Meal meal = em.find(Meal.class, id);
-        if (meal.getUser().getId() == userId) {
-            em.remove(meal);
-        }
-        return true;
-        */
     }
 
     @Override
     public Meal get(int id, int userId) {
         Meal meal = em.find(Meal.class, id);
-        if (meal.getUser().getId() == userId) {
+        if (meal != null && meal.getUser().getId() == userId) {
             return meal;
         }
         return null;
@@ -74,9 +70,10 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
+        List<Meal> meals = em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
                 .setParameter(1, userId)
                 .getResultList();
+        return meals;
     }
 
     @Override

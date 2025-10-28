@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 
 @Entity
@@ -17,7 +18,7 @@ import java.time.LocalTime;
         @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=?1 AND m.user.id=?2"),
         @NamedQuery(name = Meal.UPDATE, query = "UPDATE Meal m SET m.description=?1, m.calories=?2, " +
                 "m.dateTime=?3 WHERE m.id=?4 AND m.user.id=?5"),
-        @NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m LEFT JOIN FETCH m.user WHERE m.id=?1 AND m.user.id=?2"),
+        //@NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m LEFT JOIN FETCH m.user WHERE m.id=?1 AND m.user.id=?2"),
         @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m LEFT JOIN m.user u WHERE m.user.id=?1 ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.GET_BETWEEN_HALF_OPEN, query = "SELECT m FROM Meal m WHERE m.user.id=?1  AND m.dateTime >=  ?2 AND m.dateTime < ?3 " +
                 "ORDER BY m.dateTime DESC"),
@@ -29,7 +30,7 @@ public class Meal extends AbstractBaseEntity {
     public static final String ALL_SORTED = "Meal.getAllSorted";
     public static final String GET_BETWEEN_HALF_OPEN = "Meal.getBetweenHalfOpen";
 
-    @Column(name = "date_time", nullable = false, columnDefinition = "timestamp")
+    @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
 
@@ -38,12 +39,13 @@ public class Meal extends AbstractBaseEntity {
     @Size(min = 4, max = 128)
     private String description;
 
-    @Column(name = "calories", nullable = false, columnDefinition = "int default 2000")
+    @Column(name = "calories", nullable = false)
     @Range(min = 10, max = 10000)
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @NotNull
     private User user;
 
     public Meal() {
@@ -98,6 +100,20 @@ public class Meal extends AbstractBaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Meal meal = (Meal) o;
+        return calories == meal.calories && Objects.equals(dateTime, meal.dateTime) && Objects.equals(description, meal.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), dateTime, description, calories);
     }
 
     @Override

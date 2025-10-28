@@ -29,11 +29,18 @@ public class ValidationUtil {
         }
     }
 
+    public static void checkUserId(boolean found, String msg) {
+        if (found) {
+            throw new NotFoundException("Not enough " + msg);
+        }
+    }
+
     public static void checkIsNew(AbstractBaseEntity entity) {
         if (!entity.isNew()) {
             throw new IllegalArgumentException(entity + " must be new (id=null)");
         }
     }
+
 
     public static void assureIdConsistent(AbstractBaseEntity entity, int id) {
 //      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)

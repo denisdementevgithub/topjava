@@ -134,6 +134,7 @@ public class User extends AbstractNamedEntity {
         this.meals = meals;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
