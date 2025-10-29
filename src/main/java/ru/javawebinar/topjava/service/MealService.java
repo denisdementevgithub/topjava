@@ -45,8 +45,9 @@ public class MealService {
         Assert.notNull(meal, "meal must not be null");
         if (meal.getUser() != null && meal.getUser().getId() != userId) {
             throw new NotFoundException("you can't update this meal");
+        } else {
+            checkNotFound(repository.save(meal, userId), meal.id());
         }
-        checkNotFound(repository.save(meal, userId), meal.id());
     }
 
     public Meal create(Meal meal, int userId) {

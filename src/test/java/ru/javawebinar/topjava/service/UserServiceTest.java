@@ -65,14 +65,6 @@ public class UserServiceTest {
     @Test
     public void get() {
         User user = service.get(USER_ID);
-        List<Meal> meals = MealTestData.meals;
-        meals.sort(Comparator.comparing(Meal::getDateTime));
-        UserTestData.user.setMeals(meals);
-        for (Meal meal : meals) {
-            meal.setUser(UserTestData.user);
-        }
-
-        //Assertions.assertThat(user).usingRecursiveComparison().ignoringFields("meals", "registered", "roles").isEqualTo(UserTestData.user);
         USER_MATCHER.assertMatch(user, UserTestData.user);
     }
 
