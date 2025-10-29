@@ -99,8 +99,7 @@ public class MealServiceTest {
 
     @Test
     public void updateNotOwn() {
-        Meal meal = mealService.get(MEAL1_ID, USER_ID);
-        assertThrows(NotFoundException.class, () -> mealService.update(meal, ADMIN_ID));
+        assertThrows(NotFoundException.class, () -> mealService.update(meal1, ADMIN_ID));
         MEAL_MATCHER.assertMatch(mealService.get(MEAL1_ID, USER_ID), meal1);
     }
 
