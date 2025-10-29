@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.service;
 import org.springframework.dao.DataAccessException;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
@@ -43,21 +44,18 @@ public class MealService {
 
     public void update(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
-        if (meal.getUser() != null && meal.getUser().getId() != userId) {
-            throw new NotFoundException("you can't update this meal");
-        } else {
-            checkNotFound(repository.save(meal, userId), meal.id());
-        }
+        checkNotFound(repository.save(meal, userId), meal.id());
     }
 
     public Meal create(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
-        for (Meal meal1 : repository.getAll(userId)) {
-            if (meal1.getDateTime().equals(meal.getDateTime())) {
-                throw new DataAccessException("Insert another date-time") {
-                };
-            }
-        }
+
+        //for (Meal meal1 : repository.getAll(userId)) {
+        //    if (meal1.getDateTime().equals(meal.getDateTime())) {
+        //        throw new DataAccessException("Insert another date-time") {
+        //        };
+        //    }
+        //}
         return repository.save(meal, userId);
     }
 }

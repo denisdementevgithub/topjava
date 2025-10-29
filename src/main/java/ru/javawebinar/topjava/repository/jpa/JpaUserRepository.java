@@ -71,8 +71,6 @@ public class JpaUserRepository implements UserRepository {
     public List<User> getAll() {
                 List<User> users = em.createNamedQuery(User.ALL_SORTED, User.class)
                 .getResultList();
-        users.sort(Comparator.comparing(User::getName)
-                .thenComparing(User::getEmail));
         return users;
 
     }
