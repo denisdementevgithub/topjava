@@ -61,9 +61,6 @@ public class MealServiceTest {
         int newId = created.id();
         Meal newMeal = MealTestData.getNew();
         newMeal.setId(newId);
-        //User user = userService.get(USER_ID);
-        //created.setUser(user);
-        //newMeal.setUser(user);
         MEAL_MATCHER.assertMatch(created, newMeal);
         MEAL_MATCHER.assertMatch(mealService.get(newId, USER_ID), newMeal);
     }
