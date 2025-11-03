@@ -6,6 +6,7 @@ import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,10 +35,24 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 @Ignore
-public class MealServiceTest {
+public abstract class BaseMealServiceTest {
     private static final Logger log = getLogger("result");
 
     private static final StringBuilder results = new StringBuilder();
+
+    @Autowired
+    private MealService service;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+
+    @Before
+    public void setup() {
+        cacheManager.getCache("meal").clear();
+    }
+
+
 
     @Rule
     // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
@@ -50,8 +65,7 @@ public class MealServiceTest {
         }
     };
 
-    @Autowired
-    private MealService service;
+
 
     @AfterClass
     public static void printResult() {
@@ -61,6 +75,7 @@ public class MealServiceTest {
                 results +
                 "\n---------------------------------");
     }
+
 
     @Test
     public void delete() {

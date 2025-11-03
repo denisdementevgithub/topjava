@@ -13,7 +13,9 @@ public class ActiveDbProfileResolver extends DefaultActiveProfilesResolver {
         // https://stackoverflow.com/a/52438829/548473
         String[] activeProfiles = super.resolve(aClass);
         String[] activeProfilesWithDb = Arrays.copyOf(activeProfiles, activeProfiles.length + 1);
+
         activeProfilesWithDb[activeProfiles.length] = Profiles.getActiveDbProfile();
+
         return activeProfilesWithDb;
     }
 }
