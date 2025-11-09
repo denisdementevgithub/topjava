@@ -10,7 +10,6 @@ import static ru.javawebinar.topjava.Profiles.JDBC;
 @Ignore
 public class JdbcUserServiceTest extends AbstractUserServiceTest {
     @Override
-    @Ignore
     public void createWithException() throws Exception {
     }
 }
