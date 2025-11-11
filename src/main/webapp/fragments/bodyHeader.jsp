@@ -3,5 +3,7 @@
 
 <fmt:setBundle basename="messages.app"/>
 <header>
-    <a href="meals"><fmt:message key="app.title"/></a> | <a href="users"><fmt:message key="user.title"/></a> | <a href="index.jsp"><fmt:message key="app.home"/></a>
+    <a href="meals"><fmt:message key="app.title"/></a>
+    | <a href="users"><fmt:message key="user.title"/></a>
+    | <a href="index.jsp"><fmt:message key="app.home"/></a>
 </header>
