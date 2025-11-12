@@ -28,7 +28,7 @@ public class RootController {
     public String getUsers(Model model) {
         log.info("users");
         model.addAttribute("users", service.getAll());
-        return "users";
+        return "WEB-INF/jsp/users";
     }
 
     @PostMapping("/users")
