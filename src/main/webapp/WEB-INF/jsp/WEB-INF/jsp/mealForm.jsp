@@ -10,9 +10,8 @@
 <jsp:include page="../../fragments/bodyHeader.jsp"/>
 <br>
 <section>
-    <h3><a href="index.html"><fmt:message key="app.home"/> </a></h3>
     <hr>
-    <h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>
+    <h2><fmt:message key="${param.action == 'create' ? 'meal.createMeal' : 'meal.editMeal'}"/></h2>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <form method="post" action="/topjava/meals">
         <input type="hidden" name="id" value="${meal.id}">
@@ -28,8 +27,8 @@
             <dt><fmt:message key="meal.calories"/></dt>
             <dd><input type="number" value="${meal.calories}" name="calories" required></dd>
         </dl>
-        <button type="submit">Save</button>
-        <button onclick="window.history.back()" type="button">Cancel</button>
+        <button type="submit"><fmt:message key="app.save"/></button>
+        <button onclick="window.history.back()" type="button"><fmt:message key="app.cancel"/></button>
     </form>
 </section>
 <jsp:include page="../../fragments/footer.jsp"/>

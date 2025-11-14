@@ -32,7 +32,7 @@
         <button type="submit"><fmt:message key="meal.filter"/></button>
     </form>
     <hr/>
-    <a href="meals/action=create"><fmt:message key="meal.addMeal"/></a>
+    <a href="meals/create"><fmt:message key="meal.addMeal"/></a>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
