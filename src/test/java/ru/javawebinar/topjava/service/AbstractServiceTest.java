@@ -48,15 +48,11 @@ public abstract class AbstractServiceTest {
                 .withRootCauseInstanceOf(rootExceptionClass);
     }
 
-    @Test
-    public void createWithException() throws Exception {
+    public boolean checkProfile() {
         List<String> currentProfiles = Arrays.asList(environment.getActiveProfiles());
-        Assume.assumeFalse(currentProfiles.contains(Profiles.JDBC));
-        doTest();
+        return currentProfiles.contains(Profiles.JDBC);
     }
 
-    public void doTest() {
 
-    }
 
 }

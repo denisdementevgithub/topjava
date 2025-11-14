@@ -4,7 +4,8 @@
 <fmt:setBundle basename="messages.app"/>
 
 <head>
+    <base href="${pageContext.request.contextPath}/">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><fmt:message key="app.title"/></title>
-    <link rel="stylesheet" href="/topjava/resources/css/style.css">
+    <link rel="stylesheet" href="resources/css/style.css">
 </head>
