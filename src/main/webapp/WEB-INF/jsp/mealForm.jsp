@@ -5,15 +5,15 @@
 <fmt:setBundle basename="messages.app"/>
 
 <html>
-<jsp:include page="../../fragments/headTag.jsp"/>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
-<jsp:include page="../../fragments/bodyHeader.jsp"/>
+<jsp:include page="fragments/bodyHeader.jsp"/>
 <br>
 <section>
     <hr>
     <h2><fmt:message key="${param.action == 'create' ? 'meal.createMeal' : 'meal.editMeal'}"/></h2>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
-    <form method="post" action="/topjava/meals">
+    <form method="post" action="${pageContext.request.contextPath}/meals">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt><fmt:message key="meal.date"/> </dt>
@@ -31,6 +31,6 @@
         <button onclick="window.history.back()" type="button"><fmt:message key="app.cancel"/></button>
     </form>
 </section>
-<jsp:include page="../../fragments/footer.jsp"/>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

@@ -1,7 +1,5 @@
 package ru.javawebinar.topjava.web.meal;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +9,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,6 +19,7 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
 import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 
 @Controller
+@RequestMapping(value = "/meals")
 public class JspMealController extends AbstractMealRestControllerClass {
 
     @Autowired
@@ -29,7 +27,7 @@ public class JspMealController extends AbstractMealRestControllerClass {
         super(service);
     }
 
-    @GetMapping("/meals/filter")
+    @GetMapping("/filter")
     public String getMealsBetween(Model model,
                                   @RequestParam(required = false) String startDate,
                                   @RequestParam(required = false) String endDate,
@@ -41,40 +39,40 @@ public class JspMealController extends AbstractMealRestControllerClass {
         LocalTime localStartTime = parseLocalTime(startTime);
         LocalTime localEndTime = parseLocalTime(endTime);
         model.addAttribute("meals", super.getBetween(localStartDate, localStartTime, localEndDate, localEndTime));
-        return "WEB-INF/jsp/meals";
+        return "meals";
     }
 
-    @GetMapping("/meals")
+    @GetMapping
     public String getMeals(Model model) {
         log.debug("jspMealController method getMeals");
         model.addAttribute("meals", super.getAll());
-        return "WEB-INF/jsp/meals";
+        return "meals";
     }
 
-    @GetMapping("/meals/update/{id}")
+    @GetMapping("/update/{id}")
     public String getMeal(Model model, @PathVariable("id") int id) {
         log.debug("jspMealController method getMeal");
         final Meal meal = super.get(id);
         model.addAttribute("meal", meal);
-        return "WEB-INF/jsp/mealForm";
+        return "mealForm";
     }
 
-    @GetMapping("/meals/create")
+    @GetMapping("/create")
     public String getNewMeal(Model model) {
         log.debug("jspMealController method getNewMeal");
         final Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000);
         model.addAttribute("meal", meal);
-        return "WEB-INF/jsp/mealForm";
+        return "mealForm";
     }
 
-    @GetMapping("/meals/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteMeal(@PathVariable("id") int id) {
         log.debug("jspMealController method deleteMeal");
         super.delete(id);
         return "redirect:/meals";
     }
 
-    @PostMapping("/meals")
+    @PostMapping
     public String save(HttpServletRequest request) {
         log.debug("jspMealController method save");
         Meal meal = new Meal(

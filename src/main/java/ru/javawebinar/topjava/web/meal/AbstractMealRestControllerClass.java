@@ -18,7 +18,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkIsNew;
 
 
 public abstract class AbstractMealRestControllerClass {
-    public final Logger log = LoggerFactory.getLogger(this.getClass());
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final MealService service;
 
