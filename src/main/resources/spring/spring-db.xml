@@ -75,6 +75,9 @@
     </beans>
 
     <beans profile="jpa,datajpa">
+        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+            <constructor-arg ref="dataSource"/>
+        </bean>
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource"
               p:packagesToScan="ru.javawebinar.**.model">
