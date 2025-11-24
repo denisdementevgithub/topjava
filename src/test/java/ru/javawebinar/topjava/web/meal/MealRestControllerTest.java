@@ -13,6 +13,7 @@ import ru.javawebinar.topjava.web.json.JsonUtil;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,8 +24,8 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 public class MealRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL = MealRestController.REST_URL + '/';
-    private static final LocalDateTime startDate = LocalDateTime.of(2020, Month.JANUARY, 30, 0, 0);
-    private static final LocalDateTime endDate = LocalDateTime.of(2020, Month.JANUARY, 30, 23, 59);
+    private static final LocalDateTime startDate = LocalDateTime.of(2020, Month.JANUARY, 30, 0, 0, 00);
+    private static final LocalDateTime endDate = LocalDateTime.of(2020, Month.JANUARY, 30, 23, 59, 00);
 
     @Autowired
     private MealService mealService;
@@ -41,8 +42,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void getBetween() throws Exception {
         perform(MockMvcRequestBuilders.get("/rest/admin/users/100000/meals/filter")
-                .param("startDateTime", startDate.toString())
-                .param("endDateTime", endDate.toString()))
+                .param("startDateTime", startDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                .param("endDateTime", endDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
