@@ -41,9 +41,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
-        perform(MockMvcRequestBuilders.get("/rest/admin/meals/filter")
-                .param("startDateTime", startDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-                .param("endDateTime", endDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+        perform(MockMvcRequestBuilders
+                .get("/rest/meals/filter?startDateTime=2020-01-30T00:00:00&endDateTime=2020-01-30T23:59:59"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

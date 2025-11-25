@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping(value = MealRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealRestController extends AbstractMealController {
 
-    static final String REST_URL = "/rest/admin/meals";
+    static final String REST_URL = "/rest/meals";
 
     @Override
     @GetMapping("/{id}")
@@ -59,10 +59,13 @@ public class MealRestController extends AbstractMealController {
         super.update(meal, id);
     }
 
-
     @GetMapping("/filter")
-    public List<MealTo> getBetween(@RequestParam(required = false) @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
-                                   @RequestParam(required = false) @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime) {
+    public List<MealTo> getBetween(@RequestParam(required = false) @Nullable
+                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                       LocalDateTime startDateTime,
+                                   @RequestParam(required = false) @Nullable
+                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                   LocalDateTime endDateTime) {
         LocalDate startDate = startDateTime.toLocalDate();
         LocalTime startTime = startDateTime.toLocalTime();
         LocalDate endDate = endDateTime.toLocalDate();
