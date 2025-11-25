@@ -30,13 +30,13 @@ public class JspMealController extends AbstractMealController {
     @GetMapping("/update")
     public String update(HttpServletRequest request, Model model) {
         model.addAttribute("meal", super.get(getId(request)));
-        return "mealForm";
+        return "/mealForm.jsp";
     }
 
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("meal", new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000));
-        return "mealForm";
+        return "/mealForm.jsp";
     }
 
     @PostMapping
@@ -60,7 +60,7 @@ public class JspMealController extends AbstractMealController {
         LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
         LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
         model.addAttribute("meals", super.getBetween(startDate, startTime, endDate, endTime));
-        return "meals";
+        return "/meals.jsp";
     }
 
     private int getId(HttpServletRequest request) {
