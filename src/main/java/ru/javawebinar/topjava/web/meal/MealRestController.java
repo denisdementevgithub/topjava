@@ -21,11 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = MealRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealRestController extends AbstractMealController {
-    static {
-        SecurityUtil.setAuthUserId(100000);
-    }
 
-    static final String REST_URL = "/rest/admin/users/100000/meals";
+    static final String REST_URL = "/rest/admin/meals";
 
     @Override
     @GetMapping("/{id}")
@@ -62,11 +59,6 @@ public class MealRestController extends AbstractMealController {
         super.update(meal, id);
     }
 
-    @Override
-    @PutMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Meal create(@RequestBody Meal meal) {
-        return super.create(meal);
-    }
 
     @GetMapping("/filter")
     public List<MealTo> getBetween(@RequestParam(required = false) @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,

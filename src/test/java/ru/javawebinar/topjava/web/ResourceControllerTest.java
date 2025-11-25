@@ -11,7 +11,7 @@ public class ResourceControllerTest extends AbstractControllerTest {
 
     @Test
     void getResources() throws Exception {
-        perform(get("/resources/resources/css/style.css"))
+        perform(get("/resources/css/style.css"))
                 .andExpect(header().string("Content-Type", containsString("text/css")))
                 .andExpect(status().isOk());
     }

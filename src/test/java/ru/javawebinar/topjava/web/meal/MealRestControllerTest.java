@@ -41,7 +41,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
-        perform(MockMvcRequestBuilders.get("/rest/admin/users/100000/meals/filter")
+        perform(MockMvcRequestBuilders.get("/rest/admin/meals/filter")
                 .param("startDateTime", startDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .param("endDateTime", endDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
                 .andDo(print())
@@ -74,10 +74,10 @@ public class MealRestControllerTest extends AbstractControllerTest {
         Meal created = mealService.create(MealTestData.getNew(), USER_ID);
         int newId = created.id();
         Meal newMeal = MealTestData.getNew();
-        perform(MockMvcRequestBuilders.put(REST_URL)
+        perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newMeal)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         newMeal.setId(newId);
         MEAL_MATCHER.assertMatch(created, newMeal);
         MEAL_MATCHER.assertMatch(mealService.get(newId, USER_ID), newMeal);
