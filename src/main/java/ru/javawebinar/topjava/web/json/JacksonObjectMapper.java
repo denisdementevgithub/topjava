@@ -30,6 +30,7 @@ public class JacksonObjectMapper extends ObjectMapper {
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
         setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
