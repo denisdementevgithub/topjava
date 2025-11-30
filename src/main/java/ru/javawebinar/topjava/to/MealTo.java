@@ -2,6 +2,8 @@ package ru.javawebinar.topjava.to;
 
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Objects;
 
 public class MealTo {
@@ -42,6 +44,10 @@ public class MealTo {
 
     public boolean isExcess() {
         return excess;
+    }
+
+    public Date getDateInsteadOfLocalDateTime() {
+        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     @Override
