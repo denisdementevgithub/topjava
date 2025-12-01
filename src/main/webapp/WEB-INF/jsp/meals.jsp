@@ -8,6 +8,7 @@
 <body>
 <script src="resources/js/topjava.common.js" defer></script>
 <script src="resources/js/topjava.meals.js" defer></script>
+
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <div class="jumbotron pt-4">
@@ -30,7 +31,7 @@
             <c:forEach items="${requestScope.meals}" var="mealTo">
                 <jsp:useBean id="mealTo" type="ru.javawebinar.topjava.to.MealTo"/>
                 <tr data-meal-excess="${mealTo.excess}" id="${mealTo.id}">
-                    <td><fmt:formatDate value="${mealTo.dateInsteadOfLocalDateTime}" pattern="dd-MMMM-yyyy HH:mm"/></td>
+                    <td>${fn:formatDateTime(mealTo.dateTime)}</td>
                     <td><c:out value="${mealTo.description}"/></td>
                     <td><c:out value="${mealTo.calories}"/> </td>
                     <td><a class="update"><span class="fa fa-pencil"></span> </a></td>
@@ -40,6 +41,8 @@
         </table>
     </div>
 </div>
+
+
 
 <div class="modal fade" tabindex="-1" id="editRow">
     <div class="modal-dialog">
@@ -85,6 +88,7 @@
         </div>
     </div>
 </div>
+
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

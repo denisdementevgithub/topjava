@@ -46,10 +46,6 @@ public class MealTo {
         return excess;
     }
 
-    public Date getDateInsteadOfLocalDateTime() {
-        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

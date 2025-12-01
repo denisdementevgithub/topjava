@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
@@ -10,7 +12,7 @@ import java.util.List;
 
 @Repository
 public class DataJpaMealRepository implements MealRepository {
-
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private final CrudMealRepository crudMealRepository;
     private final CrudUserRepository crudUserRepository;
 
@@ -43,6 +45,7 @@ public class DataJpaMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
+        log.info("DataJpaMealRepository method getAll");
         return crudMealRepository.getAll(userId);
     }
 

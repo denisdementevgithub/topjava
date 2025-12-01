@@ -78,3 +78,4 @@ function failNoty(jqXHR) {
     });
     failedNote.show()
 }
+
