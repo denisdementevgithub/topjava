@@ -39,3 +39,32 @@ $(function () {
         })
     );
 });
+
+function getFilterForm() {
+    $("#filterForm").modal();
+}
+
+function doFilter() {
+    $('#filterForm').on('click', function () {
+        const startDateTime = $('input[name="startDateTime"]').val();
+        const [startDate, startTime] = startDateTime.split('T');
+        const endDateTime = $('input[name="endDateTime"]').val();
+        const [endDate, endTime] = endDateTime.split('T');
+
+        $.ajax({
+            url: ctx.ajaxUrl + "filter",
+            type: "GET",
+            data: {
+                startDate: startDate,
+                endDate: endDate,
+                startTime: startTime,
+                endTime: endTime,
+            },
+            dataType: 'json',
+            success: function (response) {
+                $("#filterForm").modal("hide");
+                ctx.datatableApi.clear().rows.add(response).draw();
+            }
+        });
+    });
+}

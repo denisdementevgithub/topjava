@@ -18,6 +18,15 @@
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>
         </button>
+        <button class="btn btn-primary" onclick="getFilterForm()">
+            <span class="fa fa-filter"></span>
+            <spring:message code="meal.filter"/>
+        </button>
+        <button class="btn btn-primary" onclick="updateTable()">
+            <span class="fa fa-close"></span>
+            <spring:message code="meal.clearFilter"/>
+        </button>
+
         <table class="table table-striped" id="datatable">
             <thead>
             <tr>
@@ -33,7 +42,7 @@
                 <tr data-meal-excess="${mealTo.excess}" id="${mealTo.id}">
                     <td>${fn:formatDateTime(mealTo.dateTime)}</td>
                     <td><c:out value="${mealTo.description}"/></td>
-                    <td><c:out value="${mealTo.calories}"/> </td>
+                    <td><c:out value="${mealTo.calories}"/></td>
                     <td><a class="update"><span class="fa fa-pencil"></span> </a></td>
                     <td><a class="delete"><span class="fa fa-remove"></span> </a></td>
                 </tr>
@@ -43,32 +52,35 @@
 </div>
 
 
-
 <div class="modal fade" tabindex="-1" id="editRow">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"><spring:message code="meal.add"/></h4>
-                <button type="button" class="close" data-dismiss="modal" onclick="closeNoty()">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" onclick="closeNoty()">&times;
+                </button>
             </div>
             <div class="modal-body">
                 <form id="detailsForm">
                     <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
-                        <label for="dateTime" class="col-form-label"><spring:message code="meal.dateTime"/></label>
+                        <label for="dateTime" class="col-form-label"><spring:message
+                                code="meal.dateTime"/></label>
                         <input type="datetime-local" class="form-control" id="dateTime" name="dateTime"
                                placeholder="<spring:message code="meal.dateTime"/>">
                     </div>
 
                     <div class="form-group">
-                        <label for="description" class="col-form-label"><spring:message code="meal.description"/></label>
+                        <label for="description" class="col-form-label"><spring:message
+                                code="meal.description"/></label>
                         <input type="text" class="form-control" id="description" name="description"
                                placeholder="<spring:message code="meal.description"/>">
                     </div>
 
                     <div class="form-group">
-                        <label for="calories" class="col-form-label"><spring:message code="meal.calories"/></label>
+                        <label for="calories" class="col-form-label"><spring:message
+                                code="meal.calories"/></label>
                         <input type="number" class="form-control" id="calories" name="calories"
                                placeholder="<spring:message code="meal.calories"/>">
                     </div>
@@ -88,6 +100,51 @@
         </div>
     </div>
 </div>
+
+<!--форма фильтра-->
+<div class="modal fade" tabindex="-1" id="filterForm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><spring:message code="meal.filter"/></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="closeNoty()">&times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="detailsFilterForm">
+                    <input type="hidden" id="filterFormId" name="filterFormId">
+                    <div class="form-group">
+                        <label for="startDateTime" class="col-form-label"><spring:message
+                                code="meal.startDate"/></label>
+                        <input type="datetime-local" class="form-control" id="startDateTime" name="startDateTime"
+                               placeholder="<spring:message code="meal.startDate"/>">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDateTime" class="col-form-label"><spring:message
+                                code="meal.endDate"/></label>
+                        <input type="datetime-local" class="form-control" id="endDateTime" name="endDateTime"
+                               placeholder="<spring:message code="meal.endDate"/>">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeNoty()">
+                    <span class="fa fa-close"></span>
+                    <spring:message code="common.cancel"/>
+                </button>
+                <button type="button" class="btn btn-primary" onclick="doFilter()">
+                    <span class="fa fa-check"></span>
+                    <spring:message code="meal.filter"/>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--             -->
+
+
 
 <jsp:include page="fragments/footer.jsp"/>
 </body>
