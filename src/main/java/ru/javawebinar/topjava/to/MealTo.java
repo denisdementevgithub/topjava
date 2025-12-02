@@ -1,14 +1,15 @@
 package ru.javawebinar.topjava.to;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.Objects;
 
 public class MealTo {
     private final Integer id;
 
+    @JsonProperty("date_time")
     private final LocalDateTime dateTime;
 
     private final String description;
