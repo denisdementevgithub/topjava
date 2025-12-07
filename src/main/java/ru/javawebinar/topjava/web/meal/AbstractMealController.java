@@ -29,6 +29,19 @@ public abstract class AbstractMealController {
         return service.get(id, userId);
     }
 
+    public MealTo getMealTo(int id) {
+        int userId = SecurityUtil.authUserId();
+        log.info("get mealTo {} for user {}", id, userId);
+        List<MealTo> mealTos = getAll();
+        for (MealTo mealTo:mealTos) {
+            if (mealTo.id() == id) {
+                return mealTo;
+            }
+        }
+        return null;
+    }
+
+
     public void delete(int id) {
         int userId = SecurityUtil.authUserId();
         log.info("delete meal {} for user {}", id, userId);
@@ -48,11 +61,25 @@ public abstract class AbstractMealController {
         return service.create(meal, userId);
     }
 
+    public Meal create(MealTo mealTo) {
+        int userId = SecurityUtil.authUserId();
+        log.info("create {}", mealTo);
+        checkIsNew(mealTo);
+        return service.create(MealsUtil.createNewFromTo(mealTo), userId);
+    }
+
     public void update(Meal meal, int id) {
         int userId = SecurityUtil.authUserId();
         log.info("update {} for user {}", meal, userId);
         assureIdConsistent(meal, id);
         service.update(meal, userId);
+    }
+
+    public void update(MealTo mealTo, int id) {
+        int userId = SecurityUtil.authUserId();
+        log.info("update mealTo {} for user {}", mealTo, userId);
+        assureIdConsistent(mealTo, id);
+        service.update(mealTo, userId);
     }
 
     /**
