@@ -12,17 +12,17 @@ import java.util.Objects;
 
 public class MealTo extends BaseTo {
 
-    @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    //@NotNull
+    //@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime dateTime;
 
-    @NotBlank
-    @Size(min = 2, max = 100)
+    //@NotBlank
+    //@Size(min = 2, max = 100)
     private String description;
 
-    @Range(min = 10, max = 10000)
-    @NotNull
-    private int calories;
+    //@Range(min = 10, max = 10000)
+    //@NotNull(message = "Поле не может быть пустым")
+    private Integer calories;
 
     private boolean excess;
 
@@ -37,7 +37,7 @@ public class MealTo extends BaseTo {
         this.description = description;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 
