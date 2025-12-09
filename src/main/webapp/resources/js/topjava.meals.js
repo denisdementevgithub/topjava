@@ -18,6 +18,29 @@ function clearFilter() {
 }
 
 $(function () {
+    console.log("Initializing datetimepicker...");
+    jQuery('#startDate').datetimepicker({
+        timepicker:false,
+        format: 'Y-m-d',
+        scrollInput: false
+    });
+    jQuery('#endDate').datetimepicker({
+        timepicker:false,
+        format: 'Y-m-d',
+        scrollInput: false
+    });
+    jQuery('#startTime').datetimepicker({
+        datepicker:false,
+        format: 'H:i',
+        scrollInput: false,
+        step: 30
+    });
+    jQuery('#endTime').datetimepicker({
+        datepicker:false,
+        format: 'H:i',
+        scrollInput: false,
+        step: 30
+    });
     makeEditable(
         $("#datatable").DataTable({
             "ajax": {
@@ -64,5 +87,7 @@ $(function () {
                     $(row).attr("data-meal-excess", data.excess);
             }
         })
+
+
     );
 });

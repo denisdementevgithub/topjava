@@ -12,6 +12,44 @@
 <div class="jumbotron pt-4">
     <div class="container">
         <h3 class="text-center"><spring:message code="meal.title"/></h3>
+        <!--  -->
+
+        <div class="card border-dark">
+            <div class="card-body pb-0">
+                <form id="filter">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="startDate"><spring:message code="meal.startDate"/></label>
+                            <input type="text" name="startDate" id="startDate">
+                        </div>
+                        <div class="col-3">
+                            <label for="endDate"><spring:message code="meal.endDate"/></label>
+                            <input type="text" name="endDate" id="endDate">
+                        </div>
+                        <div class="col-3">
+                            <label for="startTime"><spring:message code="meal.startTime"/></label>
+                            <input type="text" name="startTime" id="startTime">
+                        </div>
+                        <div class="col-3">
+                            <label for="endTime"><spring:message code="meal.endTime"/></label>
+                            <input type="text" name="endTime" id="endTime">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-right">
+                <button class="btn btn-danger" onclick="clearFilter()">
+                    <span class="fa fa-remove"></span>
+                    <spring:message code="common.cancel"/>
+                </button>
+                <button class="btn btn-primary" onclick="ctx.updateTable()">
+                    <span class="fa fa-filter"></span>
+                    <spring:message code="meal.filter"/>
+                </button>
+            </div>
+        </div>
+
+        <!--  -->
         <button class="btn btn-primary" onclick="add()">
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>
