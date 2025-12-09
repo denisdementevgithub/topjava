@@ -40,16 +40,8 @@ public class MealService {
 
     public void update(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
-        checkNotFound(repository.save(meal, userId), meal.getId());
-    }
-/*
-    public void update(MealTo mealTo, int userId) {
-        Meal meal = MealsUtil.createNewFromTo(mealTo);
-        meal.setId(mealTo.id());
-        Assert.notNull(mealTo, "meal must not be null");
         checkNotFound(repository.save(meal, userId), meal.id());
     }
- */
 
     public Meal create(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");

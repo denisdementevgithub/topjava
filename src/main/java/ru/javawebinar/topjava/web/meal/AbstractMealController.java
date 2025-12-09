@@ -28,21 +28,6 @@ public abstract class AbstractMealController {
         log.info("get meal {} for user {}", id, userId);
         return service.get(id, userId);
     }
-/*
-    public MealTo getMealTo(int id) {
-        int userId = SecurityUtil.authUserId();
-        log.info("get mealTo {} for user {}", id, userId);
-        List<MealTo> mealTos = getAll();
-        for (MealTo mealTo:mealTos) {
-            if (mealTo.id() == id) {
-                return mealTo;
-            }
-        }
-        return null;
-    }
-
- */
-
 
     public void delete(int id) {
         int userId = SecurityUtil.authUserId();
@@ -62,15 +47,6 @@ public abstract class AbstractMealController {
         checkIsNew(meal);
         return service.create(meal, userId);
     }
-/*
-    public Meal create(MealTo mealTo) {
-        int userId = SecurityUtil.authUserId();
-        log.info("create {}", mealTo);
-        checkIsNew(mealTo);
-        return service.create(MealsUtil.createNewFromTo(mealTo), userId);
-    }
-
- */
 
     public void update(Meal meal, int id) {
         int userId = SecurityUtil.authUserId();
@@ -78,15 +54,6 @@ public abstract class AbstractMealController {
         assureIdConsistent(meal, id);
         service.update(meal, userId);
     }
-/*
-    public void update(MealTo mealTo, int id) {
-        int userId = SecurityUtil.authUserId();
-        log.info("update mealTo {} for user {}", mealTo, userId);
-        assureIdConsistent(mealTo, id);
-        service.update(mealTo, userId);
-    }
-
- */
 
     /**
      * <ol>Filter separately
@@ -95,7 +62,7 @@ public abstract class AbstractMealController {
      * </ol>
      */
     public List<MealTo> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
-                                            @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
+                                   @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
         int userId = SecurityUtil.authUserId();
         log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
 
