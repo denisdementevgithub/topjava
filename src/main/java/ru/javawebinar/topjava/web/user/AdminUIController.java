@@ -50,6 +50,27 @@ public class AdminUIController extends AbstractUserController {
         }
     }
 
+    /*
+@PostMapping(consumes = "application/json")
+public ResponseEntity<User> createOrUpdate(@Valid @RequestBody UserTo userTo) {
+
+    if (userTo.isNew()) {
+        User user = super.create(userTo);
+        String REST_URL = "/admin/users";
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(user);
+    } else {
+        super.update(userTo, userTo.id());
+
+    }
+    return null;
+}
+
+     */
+
+
     @Override
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
