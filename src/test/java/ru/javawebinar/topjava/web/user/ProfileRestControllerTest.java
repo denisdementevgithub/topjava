@@ -72,7 +72,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newUserT02)))
                 .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isConflict());
     }
 
     @Test
