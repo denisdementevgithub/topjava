@@ -2,9 +2,12 @@ package ru.javawebinar.topjava.web.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
@@ -64,30 +67,6 @@ class ProfileRestControllerTest extends AbstractControllerTest {
         USER_MATCHER.assertMatch(userService.get(newId), newUser);
     }
 
-
-    @Test
-    void registerWithBadEmail() throws Exception {
-        UserTo newUserT02 = new UserTo(null, "Name2", "guest@gmail.com", "newPassword2", 1500);
-        perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newUserT02)))
-                .andDo(print())
-                .andExpect(status().isConflict());
-    }
-
-    @Test
-    void registerWithNullFields() throws Exception {
-        UserTo newUser = new UserTo();
-
-        perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newUser)))
-                .andDo(print())
-                .andExpect(result-> {
-                    assert(result.getResolvedException() instanceof MethodArgumentNotValidException);
-                });
-    }
-
     @Test
     void update() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "user@yandex.ru", "newPassword", 1500);
@@ -109,5 +88,31 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_WITH_MEALS_MATCHER.contentJson(user));
+    }
+
+    @Test
+    void registerWithNullFields() throws Exception {
+        UserTo newUser = new UserTo();
+
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newUser)))
+                .andDo(print())
+                .andExpect(result-> {
+                    assert(result.getResolvedException() instanceof MethodArgumentNotValidException);
+                });
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    void registerWithBadEmail() throws Exception {
+        UserTo newUserT02 = new UserTo(null, "Name2", "guest@gmail.com", "newPassword2", 1500);
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newUserT02)))
+                .andDo(print())
+                .andExpect(result-> {
+                    assert(result.getResolvedException() instanceof DataIntegrityViolationException);
+                });
     }
 }
