@@ -2,12 +2,11 @@ package ru.javawebinar.topjava.web.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
-import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.IllegalRequestDataException;
 
 import javax.validation.Valid;
@@ -39,9 +38,11 @@ public class AdminUIController extends AbstractUserController {
     @PostMapping
     public void createOrUpdate(@Valid UserTo userTo, BindingResult result) {
         if (result.hasErrors()) {
-            StringBuilder sb = new StringBuilder();
-            result.getFieldErrors().forEach(fe->sb.append(fe.getField()).append(" ").append(fe.getDefaultMessage()).append("; "));
-            throw new IllegalRequestDataException(sb.toString());
+            StringBuilder errorDetails = new StringBuilder();
+            for (FieldError fieldError : result.getFieldErrors()) {
+                errorDetails.append(fieldError.getField()).append(" ").append(fieldError.getDefaultMessage()).append("<br>");
+            }
+            throw new IllegalRequestDataException(errorDetails.toString());
         }
         if (userTo.isNew()) {
             super.create(userTo);
@@ -49,27 +50,6 @@ public class AdminUIController extends AbstractUserController {
             super.update(userTo, userTo.id());
         }
     }
-
-    /*
-@PostMapping(consumes = "application/json")
-public ResponseEntity<User> createOrUpdate(@Valid @RequestBody UserTo userTo) {
-
-    if (userTo.isNew()) {
-        User user = super.create(userTo);
-        String REST_URL = "/admin/users";
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(user);
-    } else {
-        super.update(userTo, userTo.id());
-
-    }
-    return null;
-}
-
-     */
-
 
     @Override
     @PostMapping("/{id}")

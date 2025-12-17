@@ -38,13 +38,19 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
-        return logAndGetErrorInfo(req, e, true, DATA_ERROR);
+        ErrorInfo errorInfo = logAndGetErrorInfo(req, e, true, DATA_ERROR);
+        errorInfo.setDetail("Пользователь с такой почтой уже есть в приложении");
+        return errorInfo;
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)  // 422
     @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentNotValidException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ErrorInfo validationError(HttpServletRequest req, Exception e) {
-        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
+        String errorDetails = e.getMessage();
+        System.out.println(errorDetails);
+        ErrorInfo errorInfo = logAndGetErrorInfo(req, e, true, VALIDATION_ERROR);
+        errorInfo.setDetail(errorDetails);
+        return errorInfo;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
